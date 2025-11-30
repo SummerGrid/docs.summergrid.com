@@ -1,0 +1,43 @@
+<div><h1 id="how-to-expand-your-vps-s-root-drive">How to expand your VPS&#39;s root drive</h1>
+<p>Purchased a large storage option for your VPS however only seeing 5GB? This guide will show you how to extend your root drive so you can use your entire allocation!</p>
+<i>Allocated sizes might differ from reported sizes because of conversions and system partitions.</i>
+<ol>
+<li>Connect to your VPS&#39;s SSH server.</li>
+<li>Access the <em>root</em> account by entering <code>sudo -s</code>.<blockquote>
+<p>You will need to enter your credentials again to access this command.
+You will know when you have done this correctly as your terminal will say <code>root@...</code> at the start of your line.</p>
+</blockquote>
+</li>
+<li>View all storage devices connected to your VPS by running <code>lsblk</code>.<blockquote>
+<p>This will display a list of all storage devices.
+<img height="200px" src="https://docs.summergrid.com/media/Image-showing-lsblk-command-with-arrow-focusing-on-a-new-drive-(XVDB).png?" alt="lsblk command with arrow focusing on a new drive (XVDB)"></p>
+The drive you will need to use will usualy be at the bottom of the list and named <code>xvdb</code> or similar. It should have no partitions listed below it.
+</blockquote>
+</li>
+<li>
+    Now we need to create a partition on the new drive. Run <code>fdisk /dev/xvdb</code> (replace <code>xvdb</code> with the name of your new drive if different).<blockquote>
+    <p>This will open the fdisk utility for the new drive.</p>
+    <p>In this utility enter <code>n</code> for the command (This will create a new partition).</p>
+    <p>Next enter <code>p</code> to select a primary partition type.</p>
+    <p>Then press <code>Enter</code> to accept the default partition number.</p>
+    <p>Press <code>Enter</code> again to accept the default first sector.</p>
+    <p>Finally press <code>Enter</code> one last time to accept the default last sector.</p>
+    <p>Now enter <code>t</code> to change the partition type.</p>
+    <p>Enter <code>8e</code> to set the partition type to Linux LVM.</p>
+    <p>Finally enter <code>w</code> to write the changes to the disk and exit the utility.</p>
+</blockquote>
+</li>
+<li>Now enter <code>pvcreate /dev/xvdb1</code> (replace <code>xvdb</code> with the name of your new partition if different) to initialize the new partition as a physical volume for LVM.</li>
+<li>Now enter <code>vgs</code>.<blockquote>This will display the volume groups on your system, including the one you want to extend.
+<p>Make a note of the name of the volume group you wish to extend, usually <code>SummerGridDefault-debian-vg</code> or similar.</p>    
+<img src="https://docs.summergrid.com/media/Image-of-vgs-command-with-focus-on-the-default-volume-group-name.jpg" alt="Image of vgs command with focus on the default volume group name">
+</blockquote></li>
+<li>Now enter <code>vgextend SummerGridDefault-debian-vg /dev/xvdb1</code> (replace <code>SummerGridDefault-debian-vg</code> with the name of your volume group and <code>xvdb1</code> with the name of your new partition if different) to extend the volume group with the new physical volume.</li>
+<li>Now enter <code>lvextend -l +100%FREE /dev/SummerGridDefault-debian-vg/root</code> (replace <code>SummerGridDefault-debian-vg</code> with the name of your volume group if different) to extend the logical volume to use all available free space.</li>
+<li>Now enter <code>resize2fs /dev/SummerGridDefault-debian-vg/root</code> (replace <code>SummerGridDefault-debian-vg</code> with the name of your volume group if different) to resize the filesystem to use the extended logical volume.</li>
+<li>Now to confirm that this has worked enter <code>df -h /</code> which will show you your updated root drive size.</li>
+</ol>
+
+Done! You have successfully expanded your VPS&#39;s root drive to use the full allocated storage size.
+<br>
+<i>Need any more help? Feel free to contact our support team via our ticketing system.</i></div>
