@@ -206,11 +206,24 @@
       }
 
       #content img {
-        border-radius: 5px
+        border-radius: 5px;
+        margin: 6px;
       }
 
       div#content>div:first-child {
         max-width: 800px
+      }
+      #content code {
+          background: rgb(255 60 211 / 40%);
+          padding: 4px;
+          border-radius: 6px;
+          margin: 0px;
+          transition: 0.2s;
+          cursor: pointer;
+          line-height: 26px;
+      }
+      #content code {
+          background: rgb(255 60 211 / 70%);
       }
     </style>
     <div id="app">
@@ -223,6 +236,45 @@
       <div id="content"><span id="content-empty-message">Loading...</span></div>
     </div>
     <script>
+      function fallbackCopyTextToClipboard(text) {
+        const textArea = document.createElement('textarea');
+        textArea.value = text;
+        
+        textArea.style.position = 'fixed';
+        textArea.style.top = 0;
+        textArea.style.left = 0;
+        textArea.style.width = '2em';
+        textArea.style.height = '2em';
+        textArea.style.padding = 0;
+        textArea.style.border = 'none';
+        textArea.style.outline = 'none';
+        textArea.style.boxShadow = 'none';
+        textArea.style.background = 'transparent';
+        
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+
+        try {
+            const successful = document.execCommand('copy');
+            if (successful) {
+                console.log('Fallback copy successful!');
+                
+                const originalText = document.activeElement.textContent;
+                document.activeElement.textContent = 'Copied!';
+                
+                setTimeout(() => {
+                    document.activeElement.textContent = originalText;
+                }, 800);
+            } else {
+                console.error('Fallback copy unsuccessful!');
+            }
+        } catch (err) {
+            console.error('Oops, unable to copy using fallback', err);
+        }
+
+        document.body.removeChild(textArea);
+    }
       document.addEventListener('DOMContentLoaded', () => {
         const owner = 'SummerGrid';
         const repo = 'docs.summergrid.com';
@@ -243,6 +295,38 @@
             }
             const htmlContent = await response.text();
             contentEl.innerHTML = htmlContent;
+            if (contentEl) {
+                  const codeElements = contentEl.querySelectorAll('code');
+          
+                  codeElements.forEach(codeEl => {
+                      codeEl.style.cursor = 'copy';
+          
+                      codeEl.onclick = function() {
+                          const textToCopy = this.textContent;
+                          
+                          if (navigator.clipboard) {
+                              navigator.clipboard.writeText(textToCopy)
+                                  .then(() => {
+                                      console.log('Code copied successfully!');
+                                      
+                                      const originalText = this.textContent;
+                                      this.textContent = 'Copied!';
+                                      
+                                      setTimeout(() => {
+                                          this.textContent = originalText;
+                                      }, 800);
+                                  })
+                                  .catch(err => {
+                                      console.error('Failed to copy text: ', err);
+                                      fallbackCopyTextToClipboard(textToCopy);
+                                  });
+                          } else {
+                              console.warn('Clipboard API not available, using fallback.');
+                              fallbackCopyTextToClipboard(textToCopy);
+                          }
+                      };
+                  });
+              }
             let activeElement = clickedElement;
             if (!activeElement) {
               activeElement = document.querySelector(`.doc-link[data-path="${path}"]`);
