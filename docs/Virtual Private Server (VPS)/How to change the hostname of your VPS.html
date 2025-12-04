@@ -1,0 +1,27 @@
+
+
+<div>
+    <h1>How to change the hostname of your VPS</h1>
+    <p>When you first get your VPS, it comes with a default hostname that you might want to change to something more recognizable or appropriate for your use case.</p>
+    <ol>
+      <li>Connect to your VPS via SSH.</li>
+      <li>Access the <i>root</i> account by entering <code>sudo -s</code>.
+      <blockquote>You will need to enter your credentials again to access this command. You will know when you have done this correctly as your terminal will say <code>root@...</code> at the start of your line.</blockquote>
+      </li>
+      <li>Enter the command <code>hostnamectl set-hostname your.hostname-here.com</code>. <i>Replace <code>your.hostname-here.com</code> with the desired hostname for your VPS.</i> This will change the hostname of your VPS.</li>
+      <li>Next you need to edit the hosts file. Todo this enter the command <code>nano /etc/hosts</code>.
+      
+        <blockquote>
+          Here you will see multiple lines. Look for the line that says <code># The following lines are...</code> above that line enter <code>127.0.1.1 your.hostname-here.com</code> <i>Replace <code>your.hostname-here.com</code> with your actual hostname.</i>
+          <br>
+          <i>See the image below for an example.</i>
+          <img src="https://docs.summergrid.com/media/A-screenshot-of-Nano-editing-the-hosts-file-focused-on-a-new-hostname.png" alt="A screenshot of Nano editing the hosts file focused on a new hostname"/><br>
+          <p>Save and exit the file by pressing <code>Ctrl + S</code> to save and then <code>Ctrl + X</code> to exit.</p>
+        </blockquote>
+        
+      </li>
+      <li>
+        Reboot your VPS to apply the changes by entering the command <code>reboot</code>.
+      </li>
+    </ol>
+</div>
