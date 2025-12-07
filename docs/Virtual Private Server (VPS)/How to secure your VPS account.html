@@ -1,0 +1,41 @@
+
+
+<div>
+    <h1>How to secure your VPS account</h1>
+    <p>When you first get your VPS, it comes with a default password. It is important to change this password to secure your server.</p>
+    <h2>Changing your VPS password</h2>
+    <ol>
+      <li>Connect to your VPS via SSH.</li>
+      <li>Use the command <code>passwd</code> to change your password. You will be prompted to enter your current password and then your new password twice for confirmation.
+      
+        <blockquote>
+          Make sure to choose a strong password that includes a mix of letters, numbers, and special characters to enhance security.
+        </blockquote>
+
+      </li>
+      <li>After changing the password on your account make sure to also change the password on the <i>root</i> account. To do this, use the command <code>sudo -s</code> and enter your password.</li>
+      <li>Then, use the command <code>passwd</code> again to change the root password.</li>
+    </ol>
+
+    <h2>Changing your username</h2>
+    <p>When you first get your VPS the default username is <code>summergriduser</code>. For added security + ease of use it is recommended to change this.</p>
+    <ol>
+      <li>Connect to your VPS via SSH.</li>
+      <li>Access the <i>root</i> account using the command <code>sudo -s</code> and enter your password.</li>
+      <li>Enter the command <code>useradd -m -G sudo tempadmin</code> to add a temporary admin user to use for this process.</li>
+      <li>Enter the command <code>passwd tempadmin</code> and set a password for the temporary admin user.</li>
+      <li>Log out of your current session by entering <code>exit</code> 2 times until you are disconnected from the SSH session and then log in as the temporary admin user using SSH <code>ssh tempadmin@your_vps_ip</code>.</li>
+      <li>Now enter the command <code>sudo -s</code> and enter the password for the temporary admin account.</li>
+      <li>Now run the command <code>pkill -u summergriduser</code> <i>(Replace summergriduser with the old username if it is different.)</i> to log out the orignal user.</li>
+      <li>Use the command <code>sudo usermod -l new_username -d /home/new_username -m summergriduser</code> <i>(Replace <code>new_username</code> in the command with the username you want and also replace <code>summergriduser</code> in the command with the old username if it is different.)</i></li>
+      <li>Now run the command <code>sudo groupmod -n new_username summergriduser</code> <i>(Replace <code>new_username</code> in the command with the username you want and also replace <code>summergriduser</code> in the command with the old username if it is different.)</i></li>
+      <li>Now run <code>exit</code> 2 times until you disconnect from the SSH.</li>
+      <li>Now login to your SSH via your new username and original password.</li>
+      <li>Now enter the <i>root</i> account by entering <code>sudo -s</code> and enter your password.</li>
+      <li>Now run the command <code>pkill -u tempadmin</code> to log out the temporary user.</li>
+      <li>Now delete the temporary admin account by entering the command <code>userdel -r tempadmin</code>.</li>
+      <li>Now it is recommended to either reboot the system with the command <code>reboot</code> or to close the SSH and reconnect.</li>
+    </ol>
+</div>
+
+
