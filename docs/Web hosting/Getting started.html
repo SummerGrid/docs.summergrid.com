@@ -1,0 +1,114 @@
+<div>
+  <h1>Getting started</h1>
+  <h2>How to add your domain</h2>
+  <p>To get started with the web hosting you first need to add your domain.</p>
+  <ol>
+    <li>
+      Login to your account
+      <a
+        href="https://webhosting-control-panel.summergrid.com:2083/"
+        title="Login to web hosting control panel"
+        >here</a
+      >. Or incase that link dosen't work you can access it
+      <a
+        href="https://0-mid.hd.partner.washington.infrastructure.summergrid.com/panel/"
+        title="Login to web hosting control panel via alternative link"
+        >here</a
+      >.
+    </li>
+    <li>When logged in click on the "+ Add Web Domain" button.</li>
+    <li>Enter the domain name / sub domain you want to add to your account.</li>
+    <li>Press save when done.</li>
+    <li>
+      Where it says "Domain your.domain.here has been created successfully."
+      click on your domain name.
+    </li>
+    <li>
+      Here you can add any aliases you want, such www.your.domain or even other
+      domains entirely.
+    </li>
+    <li>Goto the DNS manager of your domain(s) that you have added.</li>
+    <li>
+      Add one of the following dns records to your (sub) domain(s)
+      <blockquote>
+        <ul>
+          <li>
+            <p>
+              (Recommended) Add the following record to have IPV6 support.
+              <i
+                >If you experience any issues with the SSL certificate
+                generation please use the other record.</i
+              >
+            </p>
+            <span>Type: <b>CNAME</b></span
+            ><br />
+            <span>Content: <b>web.summergrid.com</b></span>
+          </li>
+          <li>
+            <p>
+              <i
+                >Please note this record is not recommended as it does not
+                support IPV6. Only use it if you have issues with the first
+                one.</i
+              >
+            </p>
+            <span>Type: <b>A</b></span
+            ><br />
+            <span>Content: <b>209.50.255.250</b></span>
+          </li>
+        </ul>
+      </blockquote>
+    </li>
+    <li>Go back to the SummerGrid web hosting panel.</li>
+    <li>
+      Enable the "Enable SSL for this domain", "Use Let's Encrypt to obtain SSL
+      certificate", and "Enable automatic HTTPS redirection" toggles.
+    </li>
+    <li>
+      You may optionaly enable the enable domain redirection toggle to use
+      either the domain or a specific alias.
+    </li>
+    <li>
+      Click the "Save" button at the top right. Please wait up to 1 minute for
+      the system to generate your SSL certificate.
+    </li>
+    <li>Done! Your site is now live on SummerGrid web hosting.</li>
+  </ol>
+
+  <h2>How to put something on your website</h2>
+  <h3>Using the quick installer</h3>
+  <p>
+    Want to quickly setup a wiki, personal cloud, wordpress site, or more? Use
+    the quick installer to get started fast.
+  </p>
+  <ol>
+    <li>Select the domain you wish to install the app on.</li>
+    <li>Click on the "Quick Install App" button at the top right.</li>
+    <li>Select on any app you wish to install and press the "Setup" button.</li>
+    <li>Fill in all of the details and press the "Save" button.</li>
+  </ol>
+
+  <h3>Using the file manager</h3>
+  <p>
+    Want to edit the source code of your website or build your own app using
+    your own code? Use the file manager for full control over your website.
+  </p>
+  <ol>
+    <li>
+      When signed into your web hosting control panel click on the folder icon
+      at the top of the page.
+    </li>
+    <li>Navigate to your website folder (web > your.domain > public_html)</li>
+    <li>
+      You can now edit all your source code on your website.
+      <blockquote>
+        <i>Our web server supports <b>.htaccess</b> files.</i>
+        <i>Want to edit your error pages (404, 500...)?</i>
+        <p>
+          Navigate to the web > your.domain > document_errors and edit the html
+          files there.
+        </p>
+      </blockquote>
+    </li>
+  </ol>
+</div>
